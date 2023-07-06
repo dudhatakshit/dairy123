@@ -3,6 +3,8 @@ import firebaseApp from "./FirebaseApp";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Formik, Field, Form } from 'formik';
+import video from './video.mp4'
+
 let allmember = []
 export default function Login() {
     const [contact, setcontact] = useState('')
@@ -87,7 +89,11 @@ export default function Login() {
                     </Form>
                 </Formik>
             </div>
-
+            <div className="background-video">
+                <video autoPlay muted loop className='videoTag' id="myVideo">
+                    <source src={video} type="video/mp4" />
+                </video>
+            </div>
             <ToastContainer />
         </>
     )

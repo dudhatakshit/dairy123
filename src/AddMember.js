@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { toast } from "react-toastify";
 
 let allmember = []
 
@@ -21,6 +22,7 @@ export default function AddMember() {
     const [occ, setocc] = useState('')
     const [date, setdate] = useState('')
 
+    const [addmembers, setaddmember] = useState([])
 
 
 
@@ -28,6 +30,7 @@ export default function AddMember() {
         if (localStorage.getItem('user1')) {
             window.location.href = '/'
         }
+        getData()
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -112,12 +115,12 @@ export default function AddMember() {
         })
     }
     const handleSubmit = () => {
+
         let registerQuery = new Promise((resolve, reject) => {
             let db = firebaseApp.firestore();
             db.collection("addmember").add({
                 fname: fname,
                 contact: contact,
-                contact2: contact2,
                 address: address,
                 occ: occ,
                 age: age,
@@ -127,10 +130,9 @@ export default function AddMember() {
                 pass: pass,
                 history: [],
                 date: date,
-
-
-
             })
+
+
                 .then((docRef) => {
                     console.log("Document written with ID: ", docRef.id);
                     resolve(docRef.id);
@@ -142,12 +144,18 @@ export default function AddMember() {
 
                 });
         });
+
         registerQuery.then(result => {
             console.warn('register successful')
         }).catch(error => {
             console.error(error)
         })
+        // for (let i = 0; i < addmembers.length; i++) {
+        //     if (contact = addmembers[i].contact) {
+        //         toast("contact number allreday register")
+        //     }
 
+        // }
         setfname('')
         setaddress('')
         setage('')
@@ -160,12 +168,11 @@ export default function AddMember() {
     const getData = () => {
 
         const db = firebaseApp.firestore();
-        db.collection('dairy').get().then((querySnapshot) => {
+        db.collection('addmember').get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                console.log(doc.data())
                 allmember.push(doc.data())
+                setaddmember(allmember)
             })
-
         }).catch(err => {
             console.error(err)
         });
@@ -177,6 +184,7 @@ export default function AddMember() {
         <>
             <Navbar bg="light" expand="lg"  >
                 <Container fluid className="n3">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR85IjuLCuZpb6XtGqASS2BS4h-wT9ngT040Q&usqp=CAU" width="216px" ></img>
 
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
@@ -186,6 +194,9 @@ export default function AddMember() {
                             navbarScroll
                         >
                             <Nav.Link className="n1" href="AddMember">AddMember</Nav.Link>
+                            <Nav.Link className="n1" href="Member">AllMember</Nav.Link>
+                            <Nav.Link className="n1 " href="Addproduct">Add Product</Nav.Link>
+
                         </Nav>
                         <button className="btn btn-secondary" onClick={logout}>LOG OUT</button>
 
@@ -194,26 +205,26 @@ export default function AddMember() {
             </Navbar>
 
 
-            <div className="container">
+            <div className="container n5">
                 <div className="row">
                     <div className="col-lg-6 col-sm-6 col-12" >
                         <center>
                             <input className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0 n2" fdprocessedid="3t48q" placeholder="First Name" type={'text'} value={fname} name='fname' onChange={changefname} /><br></br><br></br>
                             <input placeholder=" Contact Number-1" className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0" fdprocessedid="3t48q" type={'tel'} value={contact} name='contact' onChange={changecontact} /><br></br><br></br>
-                            <input placeholder=" Contact Number -2" className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0" fdprocessedid="3t48q" type={'tel'} value={contact2} name='contact2' onChange={changecontact2} /><br></br><br></br>
                             <input placeholder="Age" className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0" fdprocessedid="3t48q" type={'number'} value={age} name='age' onChange={changeage} /><br></br><br></br>
                         </center>
                     </div>
                     <div className="col-lg-6 col-sm-6 col-12">
                         <center>
-                            <input placeholder=" Password" className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0" fdprocessedid="3t48q" type='password' value={pass} name='pass' onChange={changepass}></input><br></br><br></br>
+                            <input placeholder=" Password" className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0 n2" fdprocessedid="3t48q" type='password' value={pass} name='pass' onChange={changepass}></input><br></br><br></br>
                             <input placeholder=" Address" className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0" fdprocessedid="3t48q" type={'text'} value={address} name='address' onChange={changeaddress} /><br></br><br></br>
                             <input placeholder=" Occupation" className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0" fdprocessedid="3t48q" type={'text'} value={occ} name='occ' onChange={changeocc} /><br></br><br></br>
-                            <input className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0" fdprocessedid="3t48q" type={'file'} name='profile' onChange={changeprofile} /><br></br><br></br>
                         </center>
                     </div>
                 </div>
                 <center>
+                    <input className="form-control contact-form border-top-0 border-right-0 border-left-0 p-0" fdprocessedid="3t48q" type={'file'} name='profile' onChange={changeprofile} /><br></br><br></br>
+
                     <button type="button" className="btn btn-outline-primary" onClick={handleSubmit}>SUBMIT</button>
 
                 </center>
