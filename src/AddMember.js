@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 let allmember = []
 
 export default function AddMember() {
+    const [historyData, setHistoryData] = useState([])
+
     const [fname, setfname] = useState('')
     const [contact, setcontact] = useState('')
     const [address, setaddress] = useState('')
@@ -130,6 +132,7 @@ export default function AddMember() {
                 pass: pass,
                 history: [],
                 date: date,
+                pending: [],
             })
 
 
@@ -151,7 +154,7 @@ export default function AddMember() {
             console.error(error)
         })
         // for (let i = 0; i < addmembers.length; i++) {
-        //     if (contact = addmembers[i].contact) {
+        //     if (contact == addmembers[i].contact) {
         //         toast("contact number allreday register")
         //     }
 
@@ -172,6 +175,8 @@ export default function AddMember() {
             querySnapshot.forEach((doc) => {
                 allmember.push(doc.data())
                 setaddmember(allmember)
+                setHistoryData(doc.data().history)
+                console.log("efw", historyData)
             })
         }).catch(err => {
             console.error(err)
@@ -196,6 +201,8 @@ export default function AddMember() {
                             <Nav.Link className="n1" href="AddMember">AddMember</Nav.Link>
                             <Nav.Link className="n1" href="Member">AllMember</Nav.Link>
                             <Nav.Link className="n1 " href="Addproduct">Add Product</Nav.Link>
+                            <Nav.Link className="n1 " href="payment1">CREDIT</Nav.Link>
+
 
                         </Nav>
                         <button className="btn btn-secondary" onClick={logout}>LOG OUT</button>

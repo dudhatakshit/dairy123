@@ -45,7 +45,11 @@ export default function New() {
             <div className='sidebar'>
 
                 <div className="side">
+                    <div><a href={"/new/" + id} className="tag">PROFILE</a></div>
+
                     <div><a href={"/History1/" + id} className="tag">HISTORY</a></div>
+                    <div><a href={"/payment/" + id} className="tag">PAYMENT</a></div>
+
 
                 </div>
             </div>

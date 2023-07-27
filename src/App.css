@@ -132,3 +132,40 @@
   max-width: 200px;
   height: 30px;
 }
+
+.a2 {
+  width: 200px;
+  max-width: 200px;
+  height: 30px;
+  color: red;
+}
+
+.a3 {
+  width: 200px;
+  max-width: 200px;
+  height: 30px;
+  color: green;
+}
+
+.a4 {
+  width: 200px;
+  max-width: 200px;
+  height: 30px;
+  color: blue;
+}
+
+.a13 {
+  color: green;
+}
+
+.a12 {
+  color: red;
+}
+
+.a14 {
+  color: blue;
+}
+
+.q1 {
+  margin-right: 500px;
+}

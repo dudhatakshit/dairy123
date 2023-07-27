@@ -17,7 +17,7 @@ const muiCache = createCache({
     prepend: true
 })
 
-export default function History1() {
+export default function Payment() {
     const [addmembers, setaddmember] = useState([])
     const [paid, setpaid] = useState(0)
     const [pending, setpending] = useState(0)
@@ -29,8 +29,12 @@ export default function History1() {
     const [uid, setUid] = useState('')
     const [total1, settotal1] = useState('')
 
+    // const [startDate, setStartDate] = useState(''); // State to store the start date
+    // const [endDate, setEndDate] = useState(''); // State to store the end date
+    // const [sum, setSum] = useState(0);
 
-
+    const setData1 = useState([]);
+    const setSum = useState(0);
 
     useEffect(() => {
         toast("FDVEWRD")
@@ -41,9 +45,66 @@ export default function History1() {
         setsId(id)
 
         getdata(id)
+        //     const fetchData = async () => {
+        //         try {
+        //             const snapshot = await firebaseApp.collection('addmember').get(); // Replace 'numbers' with the name of your Firestore collection
+        //             let totalSum = 0;
 
+        //             snapshot.forEach((doc) => {
+        //                 const data = historyData
+        //                 const date = data.date; // Replace 'date' with the field name that contains the date
+        //                 const total = data.total; // Replace 'value' with the field name that contains the value you want to sum
+
+        //                 if (date >= startDate && date <= endDate) {
+        //                     totalSum += total;
+        //                     // totalSum = historyData.reduce((total, historyData) => total = total + historyData.total, 0);
+
+        //                 }
+        //             });
+
+        //             setSum(totalSum);
+        //             console.log("abc", totalSum)
+        //         } catch (error) {
+        //             console.log('Error retrieving data:', error);
+        //         }
+        //     };
+
+        //     fetchData();
+
+        // const fetchData = async () => {
+        //     try {
+        //         const startDate = new Date('2023-01-01');
+        //         const endDate = new Date('2023-06-30');
+
+        //         const q = query(
+        //             collection(db, 'addmember'), // Replace with your Firestore collection name
+        //             where('date', '>=', startDate),
+        //             where('date', '<=', endDate)
+        //         );
+
+        //         const querySnapshot = await getDocs(q);
+        //         const docs = querySnapshot.docs.map(doc => doc.data());
+        //         setData(docs);
+        //     } catch (error) {
+        //         console.error('Error fetching data:', error);
+        //     }
+        // };
+
+        // fetchData();
+        // }, [startDate, endDate], []);
     }, []);
+    // const = (id) => {
 
+    //     const filteredPeople = historyData.filter((item) => item.id !== Number(id));
+    //     console.log(filteredPeople,)
+    //     deletedata(filteredPeople, id)
+    // }
+
+    // const calculateSum = () => {
+    //     // Calculate the sum of values
+    //     const filteredSum = data.reduce((acc, item) => acc + item.value, 0);
+    //     setSum(filteredSum); // Update the sum state
+    // };
 
     const removefinal1 = () => {
         // console.log(this.state.tableMeta1.rowData)
@@ -75,7 +136,15 @@ export default function History1() {
     const changepaid = (e) => {
         setpaid(e.target.value)
     }
+    // const handleStartDateChange = (event) => {
+    //     setStartDate(event.target.value);
+    //     console.log(event.target.value);
+    // };
 
+    // const handleEndDateChange = (event) => {
+    //     setEndDate(event.target.value);
+    //     console.log(event.target.value);
+    // };
 
 
 
@@ -85,7 +154,8 @@ export default function History1() {
         const db = firebaseApp.firestore();
         db.collection('addmember').where('contact', '==', id).get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-
+                // console.log(doc.data())
+                // setData(doc.data())
                 allmember.push(doc.data())
                 setaddmember(allmember)
                 setHistoryData(doc.data().history)
@@ -162,18 +232,9 @@ export default function History1() {
         setpending(x)
     }
     console.log(result);
-    const logout = () => {
-        window.location.href = '/'
-    }
     return (
         <>
-            <div className='header'>
-                <div className="q1">
-                    <button className="btn btn-secondary" onClick={logout}>LOG OUT</button>
-
-                </div>
-
-            </div>
+            <div className='header'></div>
             <div className='sidebar'>
 
                 <div className="side">
@@ -185,18 +246,29 @@ export default function History1() {
 
                 </div>
             </div>
-            <div className="abc">
-                <h3>YOUR TOTAL AMOUNT:{result}</h3>
-                <input placeholder="PAID AMMOUNT" fdprocessedid="3t48q" type={'number'} value={paid} name='paid' onChange={changepaid} /><br></br><br></br>
-                <button type="button" className="btn btn-outline-primary" onClick={abcd}>SUBMIT</button>
+            {/* <h3>YOUR TOTAL AMOUNT:{result}</h3>
+            <input placeholder="PAID AMMOUNT" fdprocessedid="3t48q" type={'number'} value={paid} name='paid' onChange={changepaid} /><br></br><br></br>
+            <button type="button" className="btn btn-outline-primary" onClick={abcd}>SUBMIT</button>
 
-                <h3>YOUR PENDING AMOUNT:{pending}</h3>
-            </div>
+            <h3>YOUR PENDING AMOUNT:{pending}</h3> */}
+
+            {/* <div>
+                <div>
+                    <label htmlFor="startDate">Start Date:</label>
+                    <input type="date" id="startDate" value={startDate} onChange={handleStartDateChange} />
+                </div>
+                <div>
+                    <label htmlFor="endDate">End Date:</label>
+                    <input type="date" id="endDate" value={endDate} onChange={handleEndDateChange} />
+                </div>
+                <h1>Sum: {sum}</h1>
+            </div> */}
 
 
-
-
-
+            {/* <div>
+                <button onClick={calculateSum}>Calculate Sum</button>
+                <p>The sum of values between the selected date range is: {sum}</p>
+            </div> */}
 
             <div className='abc'>
                 <CacheProvider value={muiCache}>
