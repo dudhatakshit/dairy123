@@ -74,9 +74,11 @@ export default function Onemember() {
                         AGE:<p className='red'>{currentData.age}</p>
                     </div>
                     <div className='col-md-6 col-sm-12'>
-                        PASSWORD:<p className='red'>{currentData.pass}</p>
                         ADDRESS:<p className='red'>{currentData.address}</p>
+
                         OCCUPATION:<p className='red'>{currentData.occ}</p>
+                        PENDDING AMMOUNT:<p className='red'>{currentData.total}</p>
+
                         DEPOSIT:<p className='red'>{currentData.deposit}</p>
 
                     </div>

@@ -20,6 +20,8 @@ const muiCache = createCache({
     prepend: true
 })
 export default function Member() {
+    const [historyData, setHistoryData] = useState([])
+
     const [addmembers, setaddmember] = useState([])
     useEffect(() => {
         if (localStorage.getItem('user1')) {
@@ -27,6 +29,11 @@ export default function Member() {
         }
         getData()
     }, [])
+    const result = historyData.reduce((total, historyData) => total = total + historyData.total, 0);
+
+    console.log('result', result)
+
+
     const columns = [
         {
             name: "fname",
@@ -74,6 +81,7 @@ export default function Member() {
                 )
             }
         },
+
         {
             name: "id",
             label: "view",
@@ -95,21 +103,26 @@ export default function Member() {
     }
     const getData = () => {
         let allmember = []
+        let abc = []
 
         const db = firebaseApp.firestore();
         db.collection('addmember').get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                // console.log(doc.data())
+                // console.log("1", doc.data().history)
+                abc.push(doc.data().history)
+                setHistoryData(abc)
+
+                // console.log("history", historyData)
                 allmember.push(doc.data())
                 setaddmember(allmember)
-
-
+                // console.log("add", addmembers)
             })
 
         }).catch(err => {
             console.error(err)
         });
     }
+
     return (
         <>
             <Navbar bg="light" expand="lg" className="" >
@@ -127,6 +140,8 @@ export default function Member() {
                             <Nav.Link className="n1" href="AddMember">AddMember</Nav.Link>
                             <Nav.Link className="n1" href="Member">All Member</Nav.Link>
                             <Nav.Link className="n1 " href="Addproduct">Add Product</Nav.Link>
+                            <Nav.Link className="n1 " href="payment1">CREDIT</Nav.Link>
+
 
                         </Nav>
                         <button className="btn btn-secondary" onClick={logout}>LOG OUT</button>

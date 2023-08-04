@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 let allmember = []
 
 export default function AddMember() {
+    const [historyData, setHistoryData] = useState([])
+
     const [fname, setfname] = useState('')
     const [contact, setcontact] = useState('')
     const [address, setaddress] = useState('')
@@ -117,6 +119,7 @@ export default function AddMember() {
     const handleSubmit = () => {
 
         let registerQuery = new Promise((resolve, reject) => {
+
             let db = firebaseApp.firestore();
             db.collection("addmember").add({
                 fname: fname,
@@ -130,10 +133,18 @@ export default function AddMember() {
                 pass: pass,
                 history: [],
                 date: date,
+                pending: [],
+                total: 0,
+
             })
 
 
                 .then((docRef) => {
+                    for (let i = 0; i < addmembers.length; i++) {
+                        if (contact == addmembers[i].contact) {
+                            toast("contact number allreday register")
+                        }
+                    }
                     console.log("Document written with ID: ", docRef.id);
                     resolve(docRef.id);
 
@@ -150,12 +161,7 @@ export default function AddMember() {
         }).catch(error => {
             console.error(error)
         })
-        // for (let i = 0; i < addmembers.length; i++) {
-        //     if (contact = addmembers[i].contact) {
-        //         toast("contact number allreday register")
-        //     }
 
-        // }
         setfname('')
         setaddress('')
         setage('')
@@ -172,6 +178,8 @@ export default function AddMember() {
             querySnapshot.forEach((doc) => {
                 allmember.push(doc.data())
                 setaddmember(allmember)
+                setHistoryData(doc.data().history)
+                console.log("efw", historyData)
             })
         }).catch(err => {
             console.error(err)
@@ -196,6 +204,8 @@ export default function AddMember() {
                             <Nav.Link className="n1" href="AddMember">AddMember</Nav.Link>
                             <Nav.Link className="n1" href="Member">AllMember</Nav.Link>
                             <Nav.Link className="n1 " href="Addproduct">Add Product</Nav.Link>
+                            <Nav.Link className="n1 " href="payment1">CREDIT</Nav.Link>
+
 
                         </Nav>
                         <button className="btn btn-secondary" onClick={logout}>LOG OUT</button>

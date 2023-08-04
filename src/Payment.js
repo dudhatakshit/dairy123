@@ -5,6 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { Anchor, ThemeProvider } from 'react-bootstrap';
 import { createTheme } from '@mui/system';
 import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -12,7 +13,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import createCache from '@emotion/cache';
 import './App.css';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { toast } from "react-toastify";
@@ -24,13 +24,12 @@ const muiCache = createCache({
     prepend: true
 })
 
-export default function History1() {
+export default function Payment() {
     const [addmembers, setaddmember] = useState([])
     const [paid, setpaid] = useState(0)
-    const [pending, setpending] = useState(0)
 
 
-    const [historyData, setHistoryData] = useState([])
+    const [pending, setpending] = useState([])
     const [id, setsId] = useState('')
     const [data, setData] = useState('')
     const [uid, setUid] = useState('')
@@ -38,6 +37,8 @@ export default function History1() {
 
 
 
+    const setData1 = useState([]);
+    const setSum = useState(0);
 
     useEffect(() => {
         toast("FDVEWRD")
@@ -67,11 +68,11 @@ export default function History1() {
         const db = firebaseApp.firestore();
         db.collection('addmember').where('contact', '==', id).get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-
-                allmember.push(doc.data())
-                setaddmember(allmember)
-                setHistoryData(doc.data().history)
-                console.log("history", historyData)
+                setData(doc.data())
+                // allmember.push(doc.data())
+                // setaddmember(allmember)
+                setpending(doc.data().pending)
+                console.log("history", pending)
 
             })
 
@@ -89,55 +90,36 @@ export default function History1() {
                 sort: true,
             }
         },
-        {
-            name: "product",
-            label: "product",
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta, updateValue) => (
-                    <>
-                        {
-                            value == "30" ? <h5 className="a13">Shakti</h5> : value == "33" ? < h5 className="a12"> Gold</h5> : <h5 className="a14">Taaza</h5>
 
-                        }
-                    </>
-                )
-            }
-        },
 
         {
-            name: "quantity",
-            label: "quantity",
+            name: "paidamonut",
+            label: "paidamonut",
             options: {
                 filter: true,
                 sort: true,
             }
         },
         {
-            name: "total",
-            label: "total",
+            name: "method",
+            label: "Payment method",
             options: {
                 filter: true,
                 sort: true,
             }
         },
+
 
 
 
 
     ]
-    const result = historyData.reduce((total, historyData) => total = total + historyData.total, 0);
-    const abcd = () => {
-        const x = result - paid
-        setpending(x)
-    }
-    console.log(result);
-    const logout = () => {
-        window.location.href = '/'
-    }
+
+
     return (
         <>
+
+
             {[false,].map((expand) => (
                 <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3">
                     <Container fluid>
@@ -167,25 +149,20 @@ export default function History1() {
                     </Container>
                 </Navbar>
             ))}
-            {/* <div className="abc">
-                <h3>YOUR TOTAL AMOUNT:{result}</h3>
-                <input placeholder="PAID AMMOUNT" fdprocessedid="3t48q" type={'number'} value={paid} name='paid' onChange={changepaid} /><br></br><br></br>
-                <button type="button" className="btn btn-outline-primary" onClick={abcd}>SUBMIT</button>
-
-                <h3>YOUR PENDING AMOUNT:{pending}</h3>
-            </div> */}
-
-
-
 
 
 
             <div className=''>
+                <div className="total">
+                    <span className="red2">PENDDING AMMOUNT:</span> <p className='red1'>{data.total}</p>
+
+                </div>
+
                 <CacheProvider value={muiCache}>
                     <ThemeProvider theme={createTheme()}>
                         <MUIDataTable
-                            title={"History"}
-                            data={historyData}
+                            title={"PAYMENT"}
+                            data={pending}
                             columns={columns}
                         />
                     </ThemeProvider>

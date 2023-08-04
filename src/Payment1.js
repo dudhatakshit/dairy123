@@ -16,27 +16,30 @@ import './App.css';
 let allmember = []
 let data = ''
 let id = ''
-let total = ''
+let history12 = []
+let pendding1 = 0
 const muiCache = createCache({
     key: "mui-datatables",
     prepend: true
 })
-export default function Addamount() {
+export default function Payment1() {
     const [addmembers, setaddmember] = useState([])
-    const [date, setdate] = useState('')
-    const [quantity, setquantity] = useState(0)
     const [total, settotal] = useState('')
-    const [dummy, setDummy] = useState([])
+    const [payment, setpayment] = useState('')
 
-    const [product, setproduct] = useState('')
-
+    const [date, setdate] = useState('')
+    const [ammount, setammount] = useState(0)
+    const [historyData, setHistoryData] = useState([])
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [pendding3, setpendding3] = useState(0);
     const [currentData, setcurrentdata] = useState('')
+
     useEffect(() => {
         console.log(addmembers)
         if (localStorage.getItem('user1')) {
             window.location.href = '/'
         }
-        getData()
+        getData(id)
         id = localStorage.getItem('currentId12')
         for (let i = 0; i < allmember.length; i++) {
             if (allmember[i].id == id) {
@@ -44,7 +47,6 @@ export default function Addamount() {
                 setcurrentdata(data)
             }
         }
-
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -52,39 +54,50 @@ export default function Addamount() {
         today = mm + '/' + dd + '/' + yyyy;
         console.log(today)
         setdate(today)
+
+
+
+
     }, []);
 
 
-    const getData = () => {
-
+    const getData = (id) => {
         console.log("getdata")
+
+
         const db = firebaseApp.firestore();
         db.collection('addmember').get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                console.log(doc.data())
+                history12.push(doc.data().history)
+                setHistoryData(history12)
                 allmember.push(doc.data())
                 setaddmember(allmember)
             })
 
-            avvc()
         }).catch(err => {
             console.error(err)
         });
     }
-
-
-    const avvc = () => {
-
-
+    const changepayment = (e) => {
+        setpayment(e.target.value)
     }
 
-    const changequantity = (e) => {
-        setquantity(e.target.value)
+
+
+
+
+    console.log("history", historyData)
+
+
+    const changeammount = (e) => {
+        setammount(e.target.value)
+    }
+    const pending2 = (e) => {
+        setTotalAmount(total)
+        pendding1 = total - ammount
     }
 
-    const changeproduct = (e) => {
-        setproduct(e.target.value)
-    }
+
     const logout = () => {
         window.location.href = '/'
     }
@@ -99,31 +112,39 @@ export default function Addamount() {
         },
 
         {
-            name: "Add Product",
-            label: "Add Product",
+            name: "total",
+            label: "total",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "paid Ammount",
+            label: "paid Ammount",
             options: {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta, updateValue) => (
-                    <select onChange={changeproduct} className="a1">
-                        <option className="a2" >SELECT PRODUCT</option>
-
-                        <option value='33' className="a2" >GOLD</option>
-                        <option value='30' className="a3">SHAKTI</option>
-                        <option value='26' className="a4">TAZA</option>
-
-                    </select>
+                    <input type="number" className="a1" onChange={changeammount}></input>
                 )
             }
         },
         {
-            name: "Quantity",
-            label: "Quantity",
+            name: "Payment Method",
+            label: "Payment Method",
             options: {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta, updateValue) => (
-                    <input type="number" className="a1" onChange={changequantity}></input>
+                    <select onChange={changepayment} className="a1">
+                        <option className="a2" >SELECT PAYMENT METHOD</option>
+
+                        <option value='cash' className="a2" >CASH</option>
+                        <option value='online payment' className="a3">ONLINE PAYMENT</option>
+                        <option value='check' className="a4">CHECK</option>
+
+                    </select>
                 )
             }
         },
@@ -134,18 +155,18 @@ export default function Addamount() {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta, updateValue) => (
-                    <button type="button" className="btn btn-secondary" onClick={() => handleEdit1(value)}> ADD</button>
+                    <button type="button" className="btn btn-secondary" onClick={() => handleEdit1(value)}> CREDIT</button>
                 )
             }
         },
-        {
-            name: "total",
-            label: "total",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
+        // {
+        //     name: "Pendding Amount ",
+        //     label: "pendding3",
+        //     options: {
+        //         filter: true,
+        //         sort: true,
+        //     }
+        // },
         {
             name: "profile",
             label: "profile",
@@ -178,12 +199,11 @@ export default function Addamount() {
 
     const handleEdit1 = (id) => {
         localStorage.setItem('currentId12', id)
-        console.log('quantity', quantity)
-        console.log('quantity', product)
+        console.log('total', total)
 
-        console.log('id', localStorage.getItem('currentId12'))
-        let x = Number(quantity) * Number(product)
-        console.log("🚀 ~ file: Addproduct.js:171 ~ handleEdit1 ~ x:", x)
+        console.log('ammount', ammount)
+
+        let x = Number(total) - Number(ammount)
 
 
         const db = firebaseApp.firestore();
@@ -194,17 +214,17 @@ export default function Addamount() {
                 var updateCollection = db.collection("addmember").doc(doc.ref.id);
 
                 return updateCollection.update({
-                    total: doc.data().total + x,
 
-                    history: [...doc.data().history,
+                    total: doc.data().total - ammount,
+                    pending: [...doc.data().pending,
                     {
                         date: date,
-                        product: product,
-                        quantity: quantity,
-                        total: Number(x),
                         id: Date.now(),
+                        paidamonut: ammount,
+                        method: payment,
 
-                    }
+                    },
+
                     ]
                 })
                     .then(() => {
@@ -224,9 +244,8 @@ export default function Addamount() {
         }).catch(err => {
             console.error(err)
         });
-        setquantity('')
-        settotal(total)
-        console.log("aaa", total)
+        setammount('')
+        setpendding3(pendding3)
     }
 
     return (
@@ -248,21 +267,29 @@ export default function Addamount() {
                             <Nav.Link className="n1 " href="Addproduct">Add Product</Nav.Link>
                             <Nav.Link className="n1 " href="payment1">CREDIT</Nav.Link>
 
+
                         </Nav>
-                        <button className="btn btn-secondary " onClick={logout}>LOG OUT</button>
+                        <button className="btn btn-secondary logout" onClick={logout}>LOG OUT</button>
                     </Navbar.Collapse>
+
                 </Container>
             </Navbar>
+
+
+
             <CacheProvider value={muiCache}>
                 <ThemeProvider theme={createTheme()}>
                     <MUIDataTable
+
                         title={"ADD PRODUCT"}
                         data={addmembers}
                         columns={columns}
                     />
+
                 </ThemeProvider>
             </CacheProvider>
         </>
+
     )
 }
 

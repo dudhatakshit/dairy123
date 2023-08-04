@@ -132,3 +132,57 @@
   max-width: 200px;
   height: 30px;
 }
+
+.a2 {
+  width: 200px;
+  max-width: 200px;
+  height: 30px;
+  color: red;
+}
+
+.a3 {
+  width: 200px;
+  max-width: 200px;
+  height: 30px;
+  color: green;
+}
+
+.a4 {
+  width: 200px;
+  max-width: 200px;
+  height: 30px;
+  color: blue;
+}
+
+.a13 {
+  color: green;
+}
+
+.a12 {
+  color: red;
+}
+
+.a14 {
+  color: blue;
+}
+
+.q1 {
+  margin-right: 500px;
+}
+
+.total {
+  height: 200px;
+  width: 200px;
+
+
+}
+
+.red1 {
+  color: rgb(120, 57, 57);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 50px !important;
+}
+
+.red2 {
+  font-size: 30px;
+}
