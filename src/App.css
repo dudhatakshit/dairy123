@@ -133,6 +133,12 @@
   height: 30px;
 }
 
+.a123 {
+  width: 100px;
+  max-width: 100px;
+  height: 30px;
+}
+
 .a2 {
   width: 200px;
   max-width: 200px;
@@ -186,3 +192,10 @@
 .red2 {
   font-size: 30px;
 }
+
+/* 
+         for (let i=0; i < addmembers.length; i++) {
+           if (contact==addmembers[i].contact) {
+             toast("contact number allreday register")
+           }
+         } */

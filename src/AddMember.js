@@ -4,10 +4,11 @@ import { type } from "@testing-library/user-event/dist/type";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { toast } from "react-toastify";
 
 let allmember = []
 
@@ -20,7 +21,6 @@ export default function AddMember() {
     const [age, setage] = useState('')
     const [profile, setprofile] = useState('')
     const [pass, setpass] = useState('')
-    const [contact2, setcontact2] = useState('')
     const [occ, setocc] = useState('')
     const [date, setdate] = useState('')
 
@@ -55,9 +55,7 @@ export default function AddMember() {
     const changecontact = (e) => {
         setcontact(e.target.value)
     }
-    const changecontact2 = (e) => {
-        setcontact2(e.target.value)
-    }
+
     const changeaddress = (e) => {
         setaddress(e.target.value)
     }
@@ -117,7 +115,13 @@ export default function AddMember() {
         })
     }
     const handleSubmit = () => {
+        const existingContact = addmembers.find(member => member.contact === contact);
 
+        if (existingContact) {
+            // Display a message indicating that the contact number already exists
+            toast("Contact number already exists.")
+            return;
+        }
         let registerQuery = new Promise((resolve, reject) => {
 
             let db = firebaseApp.firestore();
@@ -140,11 +144,7 @@ export default function AddMember() {
 
 
                 .then((docRef) => {
-                    for (let i = 0; i < addmembers.length; i++) {
-                        if (contact == addmembers[i].contact) {
-                            toast("contact number allreday register")
-                        }
-                    }
+
                     console.log("Document written with ID: ", docRef.id);
                     resolve(docRef.id);
 
@@ -168,7 +168,6 @@ export default function AddMember() {
         setcontact('')
         setprofile('')
         setpass('')
-        setcontact2('')
         setocc('')
     }
     const getData = () => {
@@ -241,7 +240,7 @@ export default function AddMember() {
 
 
             </div>
-
+            <ToastContainer />
         </>
     )
 }

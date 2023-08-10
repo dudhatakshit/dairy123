@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Formik, Field, Form } from 'formik';
 import video from './video.mp4'
-
+import localStorageLock from './LocalStorageLock';
 let allmember = []
 export default function Login() {
     const [contact, setcontact] = useState('')
@@ -45,16 +45,16 @@ export default function Login() {
 
         }
         if (admmincheck) {
-            localStorage.setItem("user0", contact)
-            if (localStorage.getItem('user0')) {
-                localStorage.removeItem('user1')
+            localStorageLock.setItem("user0", contact)
+            if (localStorageLock.getItem('user0')) {
+                localStorageLock.removeItem('user1')
             }
             window.location.href = '/Addmember'
         }
         if (check) {
-            localStorage.setItem("user1", contact)
-            if (localStorage.getItem('user1')) {
-                localStorage.removeItem('user0')
+            localStorageLock.setItem("user1", contact)
+            if (localStorageLock.getItem('user1')) {
+                localStorageLock.removeItem('user0')
             }
             window.location.href = "/new/" + contact
 

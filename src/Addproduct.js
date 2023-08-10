@@ -81,6 +81,9 @@ export default function Addamount() {
     const changequantity = (e) => {
         setquantity(e.target.value)
     }
+    const changedate = (e) => {
+        setdate(e.target.value)
+    }
 
     const changeproduct = (e) => {
         setproduct(e.target.value)
@@ -123,7 +126,18 @@ export default function Addamount() {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta, updateValue) => (
-                    <input type="number" className="a1" onChange={changequantity}></input>
+                    <input type="number" className="a123" onChange={changequantity}></input>
+                )
+            }
+        },
+        {
+            name: "date",
+            label: "date",
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, tableMeta, updateValue) => (
+                    <input type="date" className="a123" onChange={changedate}></input>
                 )
             }
         },
@@ -157,17 +171,17 @@ export default function Addamount() {
                 )
             }
         },
-        {
-            name: "id",
-            label: "view",
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta, updateValue) => (
-                    <button onClick={() => handleEdit2(value)} type="button" className="btn btn-secondary" >VIEW</button>
-                )
-            }
-        },
+        // {
+        //     name: "id",
+        //     label: "view",
+        //     options: {
+        //         filter: true,
+        //         sort: true,
+        //         customBodyRender: (value, tableMeta, updateValue) => (
+        //             <button onClick={() => handleEdit2(value)} type="button" className="btn btn-secondary" >VIEW</button>
+        //         )
+        //     }
+        // },
     ]
     const handleEdit2 = (id) => {
         localStorage.setItem('currentId12', id)
